@@ -32,10 +32,13 @@ Item {
         KeyNavigation.up: appListID
 
         // Test highlight
+        // Chưa hiện được highlight của widget
         highlight: Rectangle {
-            color: "blue"
-            opacity: 0.3
+            id: mHighlight
+            color: "cyan"
+            opacity: 0.2
             parent: lvWidget
+            visible: lvWidget.focus // Chỉ hiện focus khi nagivation đến lvWidget area
         }
 
         displaced: Transition {
@@ -172,7 +175,7 @@ Item {
         interactive: false
         spacing: 5
 
-        focus: true
+        focus: false
         clip: true
         //=======================================================================
         // Di chuyển focus đến vị trí tương ứng
@@ -217,34 +220,16 @@ Item {
                 // Nếu không thì sẽ không thể nhấn hardkey
                 onExited: {
                     appListID.focus = true
-//                    app.state = "Focus"
-//                    for (var index = 0; index < visualModel.items.count;index++){
-//                        if (index !== icon.visualIndex)
-//                            visualModel.items.get(index).focus = false
-//                        else
-//                            visualModel.items.get(index).focus = true
-//                    }
                 }
 
-                // -------------------- Hardkeys nagivation -----------------------
+                // -------------------- Hardkeys nagivation ------------------------
                 // Xử lý focus app button được chọn khi nhấn left/right
                 Keys.onReleased: {
                     app.focus = true
                     console.log("Select app: " + app.title)
-                    if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
-                        app.state = "Focus"
-                    }
-
-                    for (var index = 0; index < visualModel.items.count;index++){
-                        if (index !== icon.visualIndex) {
-                            visualModel.items.get(index).focus = false
-                        }
-                        else visualModel.items.get(index).focus = true
-                    }
                 }
                 // -------------------- Hardkeys reorder app -----------------------
                 // TODO: Xử lý hardkey reorder
-
 
                 //------------------------------------------------------------------
 
@@ -280,7 +265,7 @@ Item {
                         }
                     }
 
-                    onFocusChanged: app.focus = icon.focus
+                    onFocusChanged: app.focus = appListID.focus    //icon.focus
                     Drag.active: app.drag.active
                     Drag.source: icon
                     Drag.keys: "AppButton"

@@ -189,5 +189,6 @@
         <file>App/Setting/Setting.qml</file>
         <file>Img/Radio/Radio.gif</file>
         <file>Img/Video/Play_Button.png</file>
+        <file>../README.md</file>
     </qresource>
 </RCC>
