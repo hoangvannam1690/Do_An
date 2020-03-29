@@ -31,17 +31,6 @@ Item {
         KeyNavigation.down: appListID
         KeyNavigation.up: appListID
 
-        // Test highlight
-        // FIXME: Highlight của widget chưa hoạt động
-        // Đang dùng tạm thuộc tính highlight có sẵn
-        highlight: Rectangle {
-            id: mHighlight
-            color: "cyan"
-            opacity: 0.2
-            parent: lvWidget
-            visible: lvWidget.focus // Chỉ hiện focus khi nagivation đến lvWidget area
-        }
-
         displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
         }
@@ -70,18 +59,34 @@ Item {
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: iconWidget; property: "visualIndex"; value: visualIndex }
                 onExited: iconWidget.item.enabled = true
+
+                // FIXME: tại sao onDropped không hoạt động
                 onDropped: {
                     console.log(drop.source.visualIndex)
+                    console.log("whyfdsgnsdkgnsdkunfsed")
                 }
 
                 // -------------------- Xử lý KeyNavigation widget ---------------------------
                 // Nhấn Left/Right để lựa chọn widget
                 // Nhấn Enter để mở widget tương ứng
                 Keys.onReleased: {
-                    if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
-                        console.log("lvWidget Current Index: " + lvWidget.currentIndex)
-                        console.log("Select Widget: " + model.type)
-                    }
+                    iconWidget.item.state = "Focus"
+
+                    console.log(iconWidget.item.objectName)
+
+
+//                    if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
+//                        console.log("lvWidget Current Index: " + lvWidget.currentIndex)
+//                        console.log("Select Widget: " + model.type)
+
+//                        console.log(delegateRootWidget.focus)
+//                        console.log(iconWidget.item.state)
+
+//                        iconWidget.item.state = "Focus"
+
+
+//                    }
+
                     if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                         console.log("Enter, open widget: " + model.type)
                         if(model.type === "map"){
@@ -97,13 +102,13 @@ Item {
                 // Khi nhấn Enter thì vẫn mở đúng widget
 
 
+
                 // Reorder
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Enter && event.key === Qt.Key_Right) {
                         console.log("Enter & move: " )
                     }
                 }
-
 
                 //============================================================================
 
@@ -128,8 +133,8 @@ Item {
                     Drag.keys: "widget"
                     Drag.source: iconWidget
 
-                    Drag.hotSpot.x: delegateRootWidget.width/2
-                    Drag.hotSpot.y: delegateRootWidget.height/2
+                    Drag.hotSpot.x: delegateRootWidget.width*2/3
+                    Drag.hotSpot.y: delegateRootWidget.height*2/3
 
                     states: [
                         State {
@@ -156,6 +161,8 @@ Item {
                 onClicked: openApplication("qrc:/App/Map/Map.qml")
                 drag.target: parent
                 drag.axis: Drag.XAxis
+                state: "aaa"
+
             }
         }
         Component {
@@ -163,6 +170,7 @@ Item {
             ClimateWidget {
                 drag.target: parent
                 drag.axis: Drag.XAxis
+                state: "bbb"
             }
         }
         Component {
@@ -171,6 +179,7 @@ Item {
                 onClicked: openApplication("qrc:/App/Media/Media.qml")
                 drag.target: parent
                 drag.axis: Drag.XAxis
+                state: "ccc"
             }
         }
     }
@@ -181,7 +190,7 @@ Item {
         y:570
         width: 1920; height: 604
         orientation: ListView.Horizontal
-        interactive: false
+        interactive: true   //false     // FIXME...
         spacing: 5
 
         focus: false
@@ -213,47 +222,37 @@ Item {
                 Binding { target: icon; property: "visualIndex"; value: visualIndex }
 
                 //==============================================================================
-                // Xử lý mở app khi nhấn Enter
-                // Chú ý: Qt.Key_Enter: enter trên bàn phím số
-                // Qt.Key_Return: Enter bàn phím thường
-//                Keys.onEnterPressed: {
-//                    console.log("Enter app selection.......From Numpad")
-//                    openApplication(model.url)
-//                }
-//                Keys.onReturnPressed: {
-//                    console.log("Enter app selection.......From Keyboard")
-//                    openApplication(model.url)
-//                }
-
                 // Sau khi drag/drop thì trả lại focus về appListID
                 // Nếu không thì sẽ không thể nhấn hardkey
                 onExited: {
                     appListID.focus = true
                 }
 
-                // -------------------- Hardkeys nagivation ------------------------
-                // Xử lý focus app button được chọn khi nhấn nagivation sẽ focus vào
-                // app được chọn
+                // -------------------- Hardkeys nagivation ------------------------------------
+                // -------------------- Hardkeys reorder app -----------------------------------
+                // TODO: Xử lý hardkey reorder
+                // FIXME: Reorder....
+                Keys.onPressed: {
+//                    if ((event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier))
+//                        console.log("Shift key press " )
+
+                }
+
+
+                // Khi nhấn nagivation sẽ focus vào app được chọn
                 Keys.onReleased: {
                     app.focus = true
                     console.log("Select app: " + app.title)
 
                     // Xử lý mở app khi nhấn Enter
-                    // Chú ý: Qt.Key_Enter: enter trên bàn phím số
+                    // Chú ý: Qt.Key_Enter: enter trên bàn phím số (numpad)
                     // Qt.Key_Return: Enter bàn phím thường
                     if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                         openApplication(model.url)
                         console.log("Open " + app.title)
                     }
                 }
-                // -------------------- Hardkeys reorder app -----------------------
-                // TODO: Xử lý hardkey reorder
-                Keys.onPressed: {
-                    if(event.modifiers & Qt.ShiftModifier) {
-//                    if ((event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier)) {
-                        console.log("Shift key press " )
-                    }
-                }
+
                 //------------------------------------------------------------------
 
                 Item {
@@ -313,6 +312,15 @@ Item {
                 }
             }
         }
-    }
 
+        //Scroll list app: chỉ hiển thị khi có nhiều hơn 6 app
+        ScrollBar.horizontal:  ScrollBar {
+            id: scrollview
+            parent: appListID.parent
+            anchors.top: appListID.top
+            anchors.left: appListID.left
+            anchors.right: appListID.right
+            visible: visualModel.items.count > 6 ? true : false
+        }
+    }
 }

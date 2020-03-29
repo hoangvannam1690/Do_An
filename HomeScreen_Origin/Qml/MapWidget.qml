@@ -88,7 +88,7 @@ MouseArea {
         if (root.focus == true )
             root.state = "Focus"
         else
-            root.state = "Focus"    //"Normal"  //FIXME ............ Why???
+            root.state = "Normal"
     }
 }
 

@@ -8,17 +8,6 @@ Item {
     width: 1920
     height: 1200-70
 
-//    Item {
-//        id: startAnimation
-//        XAnimator{
-//            target: root
-//            from: 1920
-//            to: 0
-//            duration: 10000 //200
-//            running: true
-//        }
-//    }
-
     Plugin {
         id: mapPlugin
         name: "mapboxgl"     //"mapboxgl" //"osm" // , "esri", ...
