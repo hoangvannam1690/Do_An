@@ -32,7 +32,8 @@ Item {
         KeyNavigation.up: appListID
 
         // Test highlight
-        // Chưa hiện được highlight của widget
+        // FIXME: Highlight của widget chưa hoạt động
+        // Đang dùng tạm thuộc tính highlight có sẵn
         highlight: Rectangle {
             id: mHighlight
             color: "cyan"
@@ -89,11 +90,19 @@ Item {
                         if(model.type === "media"){
                             openApplication("qrc:/App/Media/Media.qml")
                         }
-                    }
+                    }                    
                 }
                 //============================================================================
                 //FIXME: Chưa hiển thị được trạng thái focus khi nagivation đến widget
                 // Khi nhấn Enter thì vẫn mở đúng widget
+
+
+                // Reorder
+                Keys.onPressed: {
+                    if(event.key === Qt.Key_Enter && event.key === Qt.Key_Right) {
+                        console.log("Enter & move: " )
+                    }
+                }
 
 
                 //============================================================================
@@ -207,14 +216,14 @@ Item {
                 // Xử lý mở app khi nhấn Enter
                 // Chú ý: Qt.Key_Enter: enter trên bàn phím số
                 // Qt.Key_Return: Enter bàn phím thường
-                Keys.onEnterPressed: {
-                    console.log("Enter app selection.......From Numpad")
-                    openApplication(model.url)
-                }
-                Keys.onReturnPressed: {
-                    console.log("Enter app selection.......From Keyboard")
-                    openApplication(model.url)
-                }
+//                Keys.onEnterPressed: {
+//                    console.log("Enter app selection.......From Numpad")
+//                    openApplication(model.url)
+//                }
+//                Keys.onReturnPressed: {
+//                    console.log("Enter app selection.......From Keyboard")
+//                    openApplication(model.url)
+//                }
 
                 // Sau khi drag/drop thì trả lại focus về appListID
                 // Nếu không thì sẽ không thể nhấn hardkey
@@ -223,14 +232,28 @@ Item {
                 }
 
                 // -------------------- Hardkeys nagivation ------------------------
-                // Xử lý focus app button được chọn khi nhấn left/right
+                // Xử lý focus app button được chọn khi nhấn nagivation sẽ focus vào
+                // app được chọn
                 Keys.onReleased: {
                     app.focus = true
                     console.log("Select app: " + app.title)
+
+                    // Xử lý mở app khi nhấn Enter
+                    // Chú ý: Qt.Key_Enter: enter trên bàn phím số
+                    // Qt.Key_Return: Enter bàn phím thường
+                    if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+                        openApplication(model.url)
+                        console.log("Open " + app.title)
+                    }
                 }
                 // -------------------- Hardkeys reorder app -----------------------
                 // TODO: Xử lý hardkey reorder
-
+                Keys.onPressed: {
+                    if(event.modifiers & Qt.ShiftModifier) {
+//                    if ((event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier)) {
+                        console.log("Shift key press " )
+                    }
+                }
                 //------------------------------------------------------------------
 
                 Item {
