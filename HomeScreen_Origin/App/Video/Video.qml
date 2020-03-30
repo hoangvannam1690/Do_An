@@ -19,9 +19,9 @@ Item {
 //        source: "https://v2bdoz1zs4.vcdn.com.vn/hls/ANTV_631/02.m3u8"   // Kênh An Ninh TV // Live
 //        source: "http://113.164.225.140:1935/live/quochoitvlive.stream_720p/playlist.m3u8." // Live
 //        source: "http://chipcun.dynu.com:333/xemtv47/xemtv47kenhthvl.m3u8?channel=thvl1" // Live
-        source: "http://220.158.149.14:9999/live/TV00000000000000000115@HHZT;LIVE" // Live
+//        source: "http://220.158.149.14:9999/live/TV00000000000000000115@HHZT;LIVE" // Live
 //        source: "https://colygaleuo.vcdn.com.vn/hls/vtc7_sd.stream/chunklist_w339395720.m3u8" // Live
-//        source: "http://htv-drm-live-cdn.fptplay.net/CDN-FPT02/CHANNELV-HD-1080p/playlist.m3u8"
+        source: "http://htv-drm-live-cdn.fptplay.net/CDN-FPT02/CHANNELV-HD-1080p/playlist.m3u8"
     }    
 
     Image {

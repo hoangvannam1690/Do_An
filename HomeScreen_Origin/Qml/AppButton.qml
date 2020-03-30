@@ -54,7 +54,7 @@ MouseArea {
         root.state = "Focus"
     }
     onFocusChanged: {
-        if (root.focus == true )
+        if (root.focus === true )
             root.state = "Focus"
         else
             root.state = "Normal"

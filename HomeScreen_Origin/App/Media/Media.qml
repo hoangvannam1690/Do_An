@@ -49,7 +49,7 @@ Item {
                 playlist.close()
                 console.log("Hide playlist ")
             }
-        }
+        }        
     }
     KeyNavigation.right: mediaInfoControl
 }

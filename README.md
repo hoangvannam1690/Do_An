@@ -4,7 +4,7 @@
 #### Bắt buộc
 * Install Taglib: 
   - `sudo apt-get install libtag1-dev` 
-* có thể cần Install LGL :
+* Install LGL nếu build bị lỗi -lGL error, Có máy thiếu có máy không (chưa rõ nguyên nhân):
   - `sudo apt-get install libgl1-mesa-dev`
 
 #### Không bắt buộc 
@@ -14,9 +14,23 @@
 
 ***
 **IDE/Compiler: Qt Creator 5.13 64bit/GCC**
-* Platform: Ubuntu
+* Platform: Ubuntu 19.10
 *
 
 ***
-** - **
+** Sử dụng **
 * Mở app InputData trước khi mở app HomeScreen vì HomeScreen sẽ kết nối và đọc dữ liệu từ InputData
+* Sử dụng hardkey:
+  - Nhấn Enter để bắt đầu hiển thị focus
+  - Nhấn Up/Down/Left/Right để select
+  - Nhấn giữ Shit + navigation để reorder (Come soon)
+  -
+* Khi danh sách app lớn hơn 6, có hiển Scrollbar
+
+** Các ứng dụng **
+* Các ứng dụng chỉ làm tượng trưng
+* Map
+* Media
+* Video: Play/Pause live TV khi nhấn Enter/mouse
+* Radio: Play/Pause radio online khi nhấn Enter/mouse
+*

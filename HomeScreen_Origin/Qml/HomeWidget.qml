@@ -9,9 +9,13 @@ Item {
     height: 1096
 
     //======================= Xử lý Hardkeys =======================
-    // Di chuyển focus đến area tương ứng
-    KeyNavigation.up: appListID
-    KeyNavigation.down: lvWidget
+    // Nhấn enter sẽ hiện focus ở widget
+    Keys.onPressed: {
+        if(event.key === Qt.Key_Enter ||event.key === Qt.Key_Return) {
+            if(root.focus == true) lvWidget.focus = true
+        }
+    }
+
     //==============================================================
 
     function openApplication(url){
@@ -25,26 +29,23 @@ Item {
         width: 1920
         height: 570
         interactive: false
+        focus: true        
+        displaced: Transition {
+            NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
+        }        
 
-        focus: true
+        // Nhấn Up/Down sẽ chuyển focus qua lại giữa Widget và app list area
         keyNavigationEnabled: true
         KeyNavigation.down: appListID
         KeyNavigation.up: appListID
 
-        displaced: Transition {
-            NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
-        }
-
         model: DelegateModel {
             id: visualModelWidget
             model: ListModel {
-                id: widgetModel
-                //@disable-check M16    // Disable warning
-                ListElement { type: "map" }
-                //@disable-check M16
-                ListElement { type: "climate" }
-                //@disable-check M16
-                ListElement { type: "media" }
+                id: widgetModel                   
+                ListElement { type: "map" }         //@disable-check M16    // Disable warning
+                ListElement { type: "climate" }     //@disable-check M16
+                ListElement { type: "media" }       //@disable-check M16
             }
 
             delegate: DropArea {
@@ -59,59 +60,47 @@ Item {
                 property int visualIndex: DelegateModel.itemsIndex
                 Binding { target: iconWidget; property: "visualIndex"; value: visualIndex }
                 onExited: iconWidget.item.enabled = true
-
-                // FIXME: tại sao onDropped không hoạt động
                 onDropped: {
                     console.log(drop.source.visualIndex)
-                    console.log("whyfdsgnsdkgnsdkunfsed")
                 }
 
                 // -------------------- Xử lý KeyNavigation widget ---------------------------
-                // Nhấn Left/Right để lựa chọn widget
+                // Nhấn Left/Right để lựa chọn focus widget
                 // Nhấn Enter để mở widget tương ứng
-                Keys.onReleased: {
-                    iconWidget.item.state = "Focus"
-
-                    console.log(iconWidget.item.objectName)
-
-
-//                    if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
-//                        console.log("lvWidget Current Index: " + lvWidget.currentIndex)
-//                        console.log("Select Widget: " + model.type)
-
-//                        console.log(delegateRootWidget.focus)
-//                        console.log(iconWidget.item.state)
-
-//                        iconWidget.item.state = "Focus"
-
-
-//                    }
-
+                Keys.onPressed: {
                     if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                         console.log("Enter, open widget: " + model.type)
-                        if(model.type === "map"){
+                        if(model.type === "map") {
                             openApplication("qrc:/App/Map/Map.qml")
                         }
                         if(model.type === "media"){
                             openApplication("qrc:/App/Media/Media.qml")
                         }
-                    }                    
-                }
-                //============================================================================
-                //FIXME: Chưa hiển thị được trạng thái focus khi nagivation đến widget
-                // Khi nhấn Enter thì vẫn mở đúng widget
-
-
-
-                // Reorder
-                Keys.onPressed: {
-                    if(event.key === Qt.Key_Enter && event.key === Qt.Key_Right) {
-                        console.log("Enter & move: " )
                     }
+                     // console.log("Nhấn: bỏ focus trước đó" )
+                        iconWidget.item.focus = false
                 }
 
-                //============================================================================
+                Keys.onReleased: {
+                    //  console.log("Nhả phím: focus button mới" )
+                    iconWidget.item.focus = true
+                    iconWidget.item.state = "Focus"
 
+                    //  if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {}
+                    console.log("Select Widget: " + model.type)
+                }
+
+
+                //============================================================================
+                // FIXME: Reorder hardkey
+                // Tham khảo KeyEvent.modifiers https://doc.qt.io/qt-5/qml-qtquick-keyevent.html#modifiers-prop
+//                Keys.onPressed: {
+//                    if((event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier)) {
+//                        console.log("Enter & move: " )
+//                    }
+//                }
+
+                //============================================================================
                 Loader {
                     id: iconWidget
                     property int visualIndex: 0
@@ -120,10 +109,11 @@ Item {
                         horizontalCenter: parent.horizontalCenter;
                         verticalCenter: parent.verticalCenter
                     }
+                    state: "Pressed"
 
                     sourceComponent: {
                         switch(model.type) {
-                        case "map": return mapWidget
+                        case "map": return mapWidget //ADD
                         case "climate": return climateWidget
                         case "media": return mediaWidget
                         }
@@ -143,7 +133,6 @@ Item {
                                 target: iconWidget
                                 parent: root
                             }
-
                             AnchorChanges {
                                 target: iconWidget
                                 anchors.horizontalCenter: undefined
@@ -161,8 +150,14 @@ Item {
                 onClicked: openApplication("qrc:/App/Map/Map.qml")
                 drag.target: parent
                 drag.axis: Drag.XAxis
-                state: "aaa"
+                state: ""
 
+                onFocusChanged: {
+                    if (focus === true )
+                        state = "Focus"
+                    else
+                        state = "Normal"
+                }
             }
         }
         Component {
@@ -170,7 +165,13 @@ Item {
             ClimateWidget {
                 drag.target: parent
                 drag.axis: Drag.XAxis
-                state: "bbb"
+                state: ""
+                onFocusChanged: {
+                    if (focus === true )
+                        state = "Focus"
+                    else
+                        state = "Normal"
+                }
             }
         }
         Component {
@@ -179,7 +180,13 @@ Item {
                 onClicked: openApplication("qrc:/App/Media/Media.qml")
                 drag.target: parent
                 drag.axis: Drag.XAxis
-                state: "ccc"
+                state: ""
+                onFocusChanged: {
+                    if (focus === true )
+                        state = "Focus"
+                    else
+                        state = "Normal"
+                }
             }
         }
     }
@@ -190,19 +197,12 @@ Item {
         y:570
         width: 1920; height: 604
         orientation: ListView.Horizontal
-        interactive: true   //false     // FIXME...
+        interactive: true
         spacing: 5
-
-        focus: false
         clip: true
-        //=======================================================================
-        // Di chuyển focus đến vị trí tương ứng
-        // Ở đây thực hiện focus đến Widget area cả khi nhấn phím Up và Down
+
         // Cần enable key Navigation, nếu giá trị false, không thể Navigation
         keyNavigationEnabled: true
-        KeyNavigation.up: lvWidget
-        KeyNavigation.down: lvWidget
-        //=======================================================================
 
         displaced: Transition {
             NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
@@ -229,20 +229,24 @@ Item {
                 }
 
                 // -------------------- Hardkeys nagivation ------------------------------------
-                // -------------------- Hardkeys reorder app -----------------------------------
-                // TODO: Xử lý hardkey reorder
-                // FIXME: Reorder....
+                // TODO: Xử lý hardkey reorder      FIXME: Reorder applist
+
+
+
+
+                //------------------------------------------------------------------------------
+
+//                onFocusChanged: {
+//                    if(appListID.focus === false)
+//                            app.focus = false
+//                }
+
+                // Khi nhấn Up/Down thì chuyển focus lên Widget, do đó bỏ focus tại app list
                 Keys.onPressed: {
-//                    if ((event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier))
-//                        console.log("Shift key press " )
-
-                }
-
-
-                // Khi nhấn nagivation sẽ focus vào app được chọn
-                Keys.onReleased: {
-                    app.focus = true
-                    console.log("Select app: " + app.title)
+                    if (event.key === Qt.Key_Up || event.key === Qt.Key_Down) {
+                        app.focus = false
+                    } else
+                        app.focus = true
 
                     // Xử lý mở app khi nhấn Enter
                     // Chú ý: Qt.Key_Enter: enter trên bàn phím số (numpad)
@@ -251,6 +255,11 @@ Item {
                         openApplication(model.url)
                         console.log("Open " + app.title)
                     }
+                }
+
+                Keys.onReleased: {
+                    app.focus = true
+                    console.log("Select app: " + app.title)
                 }
 
                 //------------------------------------------------------------------
@@ -287,7 +296,7 @@ Item {
                         }
                     }
 
-                    onFocusChanged: app.focus = appListID.focus    //icon.focus
+                    onFocusChanged: app.focus = icon.focus // appListID.focus   //icon.focus
                     Drag.active: app.drag.active
                     Drag.source: icon
                     Drag.keys: "AppButton"
