@@ -1,3 +1,9 @@
+/*          Keyboard define
+    - Khi khởi động app, nhấn Enter để bắt đầu nagivation
+    - Nhấn Enter để mở app tương ứng
+    - Nhấn Backspace để quay về Home
+    - Nhấn Shift + Left/Right để reorder
+*/
 import QtQuick 2.11
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.4
