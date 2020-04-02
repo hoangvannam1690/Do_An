@@ -9,10 +9,8 @@
         <file>Img/Climate/bg_interior.png</file>
         <file>Img/Climate/bg_wind_level.png</file>
         <file>Img/Climate/ico_air_co2.png</file>
-        <file>Img/Climate/ico_arrow_d_d.png</file>
         <file>Img/Climate/ico_arrow_d_n.png</file>
         <file>Img/Climate/ico_arrow_d_p.png</file>
-        <file>Img/Climate/ico_arrow_u_d.png</file>
         <file>Img/Climate/ico_arrow_u_n.png</file>
         <file>Img/Climate/ico_arrow_u_p.png</file>
         <file>Img/Climate/ico_asd_l.png</file>
@@ -194,5 +192,8 @@
         <file>App/Climate/ClimateInfo.qml</file>
         <file>App/Climate/Climate.qml</file>
         <file>App/Climate/ClimateButton.qml</file>
+        <file>Img/Climate/ico_arrow_d_f.png</file>
+        <file>Img/Climate/ico_arrow_u_f.png</file>
+        <file>Img/Climate/arrow.png</file>
     </qresource>
 </RCC>

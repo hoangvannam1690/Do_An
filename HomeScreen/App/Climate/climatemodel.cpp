@@ -45,3 +45,4 @@ int ClimateModel::GetSyncMode()
 {
     return m_climate->getSync_mode();
 }
+

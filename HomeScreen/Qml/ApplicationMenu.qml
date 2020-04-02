@@ -6,7 +6,7 @@ ListView {
     id: appListMenu
 
     orientation: ListView.Horizontal
-    interactive: true
+    interactive: false //true       //FIXME
     spacing: 5
     clip: true
 
@@ -84,7 +84,7 @@ ListView {
             Item {
                 id: icon
                 property int visualIndex: 0
-                width: 316; height: 526 //604   // FIXME: kích thước phải là 526
+                width: 316; height: 526
                 anchors {
                     horizontalCenter: parent.horizontalCenter;
                     verticalCenter: parent.verticalCenter
@@ -101,21 +101,16 @@ ListView {
                     drag.smoothed: false
 
                     onClicked: homeScreen.openApplication(model.url)
-//                        onReleased: {
-                    onPressAndHold:  {      //FIXME: Press and hold
+
+                    // Press & hold (800ms) thì phóng to icon
+                    onPressAndHold:  {
                         app.focus = true
                         app.state = "Drag"
-                        for (var index = 0; index < visualModel.items.count;index++){
-                            if (index !== icon.visualIndex)
-                                visualModel.items.get(index).focus = false
-                            else
-                                visualModel.items.get(index).focus = true
-                        }
                     }
                 }
 
                 onFocusChanged: app.focus = icon.focus
-                Drag.active: app.drag.active
+                Drag.active: app.state == "Drag"        // cho phép drag khi press & hold
                 Drag.source: icon
                 Drag.keys: "AppButton"
                 Drag.hotSpot.x: delegateRoot.width*2/3
@@ -126,9 +121,8 @@ ListView {
                         when: icon.Drag.active
                         ParentChange {
                             target: icon
-                            parent: root
+                            parent: appListMenu
                         }
-
                         AnchorChanges {
                             target: icon
                             anchors.horizontalCenter: undefined

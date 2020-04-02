@@ -10,29 +10,41 @@ MouseArea {
         id: idBackgroud
         width: root.width
         height: root.height
-        source: icon + "_n.png"
+//        source: icon + "_n.png"
+        source: icon
+
+        Rectangle{
+            id: mFocus
+            anchors.fill: parent
+            color: "cyan"
+            opacity: 0
+        }
     }
 
     states: [
         State {
             name: "Focus"
             PropertyChanges {
-                target: idBackgroud
-                source: icon + "_d.png"
+                target: mFocus
+//                source: icon + "_f.png"
+                opacity: 0.1
+
             }
         },
         State {
             name: "Pressed"
             PropertyChanges {
-                target: idBackgroud
-                source: icon + "_p.png"
+                target: mFocus
+//                source: icon + "_p.png"
+                opacity: 0.5
             }
         },
         State {
             name: "Normal"
             PropertyChanges {
-                target: idBackgroud
-                source: icon + "_n.png"
+                target: mFocus
+//                source: icon + "_n.png"
+                opacity: 0
             }
         }
     ]
