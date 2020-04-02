@@ -20,17 +20,53 @@ ApplicationWindow {
         source: "qrc:/Img/bg_full.png"
     }
 
+    // ----------------- Status Area ---------------------
     StatusBar {
         id: statusBar
         onBntBackClicked: stackView.pop()
         isShowBackBtn: stackView.depth == 1 ? false : true
     }
 
+    // Home Screen windows, bao gồm Widget area và Application menu area
+    Item {
+        id: homeScreen
+        width: 1920
+        height: 1096
+
+        function openApplication(url){
+            parent.push(url)
+        }
+
+        //======================= Xử lý Hardkeys =======================
+        // Nhấn Enter hiện focus ở widget, được phép nhấn hardkey nagivation
+        Keys.onPressed: {
+            if(event.key === Qt.Key_Enter ||event.key === Qt.Key_Return) {
+                if(homeScreen.focus === true) widgetArea.focus = true
+            }
+        }
+        // ----------------- Widget Area ---------------------
+        WidgetArea {
+            id: widgetArea
+            spacing: 10
+            orientation: ListView.Horizontal
+            width: 1920
+            height: 570
+        }
+        // ------------- Application men Area ----------------
+        ApplicationMenu {
+            id: applicationMenu
+            x: 0
+            y:570
+            width: 1920; height: 526    //604
+        }
+    }
+
+    // Hiệu ứng khi mở app và khi thoát app trở về home
     StackView {
         id: stackView
         width: 1920
         anchors.top: statusBar.bottom
-        initialItem: HomeWidget{}
+        initialItem: homeScreen
 
         onCurrentItemChanged: {
             currentItem.forceActiveFocus()
@@ -39,7 +75,7 @@ ApplicationWindow {
             XAnimator {
                 from: 0
                 to: -1920
-                duration: 5000  //200
+                duration: 200
                 easing.type: Easing.OutCubic
             }
         }
@@ -48,7 +84,7 @@ ApplicationWindow {
             XAnimator {
                 from: -1920
                 to: 0
-                duration: 5000  //200
+                duration: 200
                 easing.type: Easing.InCubic
             }
         }

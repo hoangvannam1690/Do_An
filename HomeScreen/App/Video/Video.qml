@@ -13,9 +13,7 @@ Item {
         implicitWidth: parent.width
         implicitHeight: parent.height
         fillMode: VideoOutput.Stretch
-         source: "https://ws.flv.nimo.tv/live/su1599512427578r00bac8d56488f6ca2d6915fb95ab88e8.flv" // Doreamon
-        // source: "http://ws.flv.nimo.tv/live/su1599512427560r1e0b7afba22fec0a5191643a588e9f06_high.flv"  // Larva
-//         source: "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.mkv"
+         source: "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.mkv"
     }    
 
     Image {
@@ -36,7 +34,7 @@ Item {
             id: appTitle
             anchors.right:  parent.right
             anchors.rightMargin: 60
-            text: "Live TV"
+            text: "Video"
             color: "white"
             font.pixelSize: 44
         }

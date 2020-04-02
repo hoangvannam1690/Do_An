@@ -3,7 +3,7 @@ import QtQuick 2.0
 MouseArea {
     id: root
     implicitWidth: 316
-    implicitHeight: 604
+    implicitHeight: 604   //Kích thước ảnh gốc là 604
     property string icon
     property string title
 
@@ -44,6 +44,13 @@ MouseArea {
             PropertyChanges {
                 target: idBackgroud
                 source: icon + "_n.png"
+            }
+        },
+        State {     // FIXME: add state
+            name: "Drag"
+            PropertyChanges {
+                target: idBackgroud
+                source: icon + "_d.png"
             }
         }
     ]

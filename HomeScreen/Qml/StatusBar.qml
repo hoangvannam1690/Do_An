@@ -67,7 +67,7 @@ Item {
 
     QtObject {
         id: time
-        property var locale: Qt.locale()
+        property var locale: Qt.locale("en_US")
         property date currentTime: new Date()
 
         Component.onCompleted: {
@@ -83,7 +83,7 @@ Item {
         onTriggered: {
             time.currentTime = new Date()
             clockTime.text = time.currentTime.toLocaleTimeString(locale, "hh:mm");
-            day.text = time.currentTime.toLocaleDateString(locale, "MMM. dd");
+            day.text = time.currentTime.toLocaleDateString(Qt.locale("en_US"), "MMM. dd");
         }
 
     }

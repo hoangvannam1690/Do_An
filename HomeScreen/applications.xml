@@ -7,7 +7,7 @@
         <APP ID="002">
                 <TITLE>Video</TITLE>
                 <URL>qrc:/App/Video/Video.qml</URL>
-                <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_climate</ICON_PATH>
+                <ICON_PATH>qrc:/Img/HomeScreen/btn_home_menu_video</ICON_PATH>
         </APP>
         <APP ID="003">
                 <TITLE>Media</TITLE>

@@ -45,9 +45,6 @@
         <file>Img/HomeScreen/bg_widget_f.png</file>
         <file>Img/HomeScreen/bg_widget_p.png</file>
         <file>Img/HomeScreen/btn_home_menu_climate_d.png</file>
-        <file>Img/HomeScreen/btn_home_menu_climate_f.png</file>
-        <file>Img/HomeScreen/btn_home_menu_climate_n.png</file>
-        <file>Img/HomeScreen/btn_home_menu_climate_p.png</file>
         <file>Img/HomeScreen/btn_home_menu_map_d.png</file>
         <file>Img/HomeScreen/btn_home_menu_map_f.png</file>
         <file>Img/HomeScreen/btn_home_menu_map_n.png</file>
@@ -139,7 +136,7 @@
         <file>Qml/Common/Button.qml</file>
         <file>Qml/AppButton.qml</file>
         <file>Qml/ClimateWidget.qml</file>
-        <file>Qml/HomeWidget.qml</file>
+        <file>Qml/WidgetArea.qml</file>
         <file>Qml/MapWidget.qml</file>
         <file>Qml/MediaWidget.qml</file>
         <file>Qml/StatusBar.qml</file>
@@ -190,5 +187,12 @@
         <file>Img/Radio/Radio.gif</file>
         <file>Img/Video/Play_Button.png</file>
         <file>../README.md</file>
+        <file>Img/HomeScreen/btn_home_menu_video_f.png</file>
+        <file>Img/HomeScreen/btn_home_menu_video_n.png</file>
+        <file>Img/HomeScreen/btn_home_menu_video_p.png</file>
+        <file>Qml/ApplicationMenu.qml</file>
+        <file>App/Climate/ClimateInfo.qml</file>
+        <file>App/Climate/Climate.qml</file>
+        <file>App/Climate/ClimateButton.qml</file>
     </qresource>
 </RCC>
