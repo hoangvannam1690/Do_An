@@ -85,7 +85,5 @@ Item {
             clockTime.text = time.currentTime.toLocaleTimeString(locale, "hh:mm");
             day.text = time.currentTime.toLocaleDateString(Qt.locale("en_US"), "MMM. dd");
         }
-
     }
-
 }

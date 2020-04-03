@@ -5,20 +5,13 @@ import QtQml.Models 2.1
 
 ListView {
     id: lvWidget
-//        spacing: 10
-//        orientation: ListView.Horizontal
-//        width: 1920
-//        height: 570
     interactive: false
     focus: true
     displaced: Transition {
         NumberAnimation { properties: "x,y"; easing.type: Easing.OutQuad }
-    }
+    }        
 
-    // Nhấn Up/Down sẽ chuyển focus qua lại giữa Widget và applist area
     keyNavigationEnabled: true
-    KeyNavigation.down: applicationMenu
-    KeyNavigation.up: applicationMenu
 
     model: DelegateModel {
         id: visualModelWidget
@@ -27,13 +20,12 @@ ListView {
             ListElement { type: "map" }         //@disable-check M16    // Disable warning
             ListElement { type: "climate" }     //@disable-check M16
             ListElement { type: "media" }       //@disable-check M16
-        }
+        }       
 
         delegate: DropArea {
             id: delegateRootWidget
             width: 635; height: 570
-            keys: ["widget"]
-
+            keys: ["widget"]                       
             onEntered: {
                 visualModelWidget.items.move(drag.source.visualIndex, iconWidget.visualIndex)
                 iconWidget.item.enabled = false
@@ -50,7 +42,9 @@ ListView {
             // Nhấn Enter để mở widget tương ứng
             Keys.onPressed: {
                 // console.log("Nhấn: bỏ focus trước đó" )
-                iconWidget.item.focus = false
+                if(event.key === Qt.Key_Left || event.key === Qt.Key_Right || lvWidget.focus == true) {
+                    iconWidget.item.focus = false
+                }
                 if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
                     console.log("Enter, open widget: " + model.type)
                     if(model.type === "map") {
@@ -64,40 +58,42 @@ ListView {
                     }
                 }
 
+                //Chuyển focus đến Application menu
+                if(event.key === Qt.Key_Up ||event.key === Qt.Key_Down) {
+                    applicationMenu.forceActiveFocus()
+                    focusPosition = "AppMenu"
+                }
+
                 // Reorder hardkey: Nhấn giữ Shift + Left/Right để sắp xếp widget
                 // Tham khảo KeyEvent.modifiers https://doc.qt.io/qt-5/qml-qtquick-keyevent.html#modifiers-prop
-                if((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Left)) {
+                if((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Left) && visualIndex > 0) {
                     console.log("Shift + move to left" )
                     widgetModel.move(visualIndex,visualIndex -1,1)
-
                     event.accepted = true
                 }
-                if((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Right)) {
+                if((event.modifiers & Qt.ShiftModifier) && (event.key === Qt.Key_Right) && visualIndex < lvWidget.count) {
                     console.log("Shift + move to right" )
                     widgetModel.move(visualIndex,visualIndex +1,1)
                     event.accepted = true
-                }
+                }               
             }
 
             Keys.onReleased: {
                 //  console.log("Nhả phím: focus button mới" )
                 iconWidget.item.focus = true
-                iconWidget.item.state = "Focus"
-
-                //  if(event.key === Qt.Key_Left || event.key === Qt.Key_Right) {}
                 console.log("Select Widget: " + model.type)
-            }
+            }            
 
             //============================================================================
             Loader {
                 id: iconWidget
                 property int visualIndex: 0
                 width: 635; height: 570
+
                 anchors {
                     horizontalCenter: parent.horizontalCenter;
                     verticalCenter: parent.verticalCenter
-                }
-//                    state: "Pressed"
+                }                                
 
                 sourceComponent: {
                     switch(model.type) {
@@ -107,7 +103,7 @@ ListView {
                     }
                 }
 
-                Drag.active: iconWidget.item.drag.active
+                Drag.active: iconWidget.item.state === "Drag"
                 Drag.keys: "widget"
                 Drag.source: iconWidget
 
@@ -119,7 +115,7 @@ ListView {
                         when: iconWidget.Drag.active
                         ParentChange {
                             target: iconWidget
-                            parent: root
+                            parent: lvWidget
                         }
                         AnchorChanges {
                             target: iconWidget
@@ -129,22 +125,21 @@ ListView {
                     }
                 ]
             }
-        }
+        }        
     }
 
     Component {
         id: mapWidget
         MapWidget{
-            onClicked: homeScreen.openApplication("qrc:/App/Map/Map.qml")
+//            onClicked: homeScreen.openApplication("qrc:/App/Map/Map.qml")
             drag.target: parent
             drag.axis: Drag.XAxis
-            state: ""
+            onPressAndHold: {
+                state = "Drag"
+            }           
 
-            onFocusChanged: {
-                if (focus === true )
-                    state = "Focus"
-                else
-                    state = "Normal"
+            onClicked: {
+                ClimateWidget.state = "Drag"
             }
         }
     }
@@ -154,13 +149,7 @@ ListView {
             onClicked: homeScreen.openApplication("qrc:/App/Climate/Climate.qml")
             drag.target: parent
             drag.axis: Drag.XAxis
-            state: ""
-            onFocusChanged: {
-                if (focus === true )
-                    state = "Focus"
-                else
-                    state = "Normal"
-            }
+            onPressAndHold: state = "Drag"
         }
     }
     Component {
@@ -169,13 +158,7 @@ ListView {
             onClicked: homeScreen.openApplication("qrc:/App/Media/Media.qml")
             drag.target: parent
             drag.axis: Drag.XAxis
-            state: ""
-            onFocusChanged: {
-                if (focus === true )
-                    state = "Focus"
-                else
-                    state = "Normal"
-            }
+            onPressAndHold: state = "Drag"
         }
     }
 }

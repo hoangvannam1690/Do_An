@@ -20,6 +20,12 @@ ApplicationWindow {
         source: "qrc:/Img/bg_full.png"
     }
 
+    // Định nghĩa vị trí focus
+    // Sử dụng thuộc tính này để quay lại vị trí focus trước khi mở app
+    //      Widget: Widget area
+    //      AppMenu: Application menu area
+    property string focusPosition: "Main"
+
     // ----------------- Status Area ---------------------
     StatusBar {
         id: statusBar
@@ -56,8 +62,8 @@ ApplicationWindow {
         ApplicationMenu {
             id: applicationMenu
             x: 0
-            y:570
-            width: 1920; height: 526    //604
+            y: 570
+            width: 1920; height: 526
         }
     }
 
@@ -94,6 +100,10 @@ ApplicationWindow {
             if (event.key === Qt.Key_Backspace && stackView.depth !== 1) {
                 console.log("back to home screen.............")
                 stackView.pop()
+
+                // Trả focus về vị trí trước khi mở ứng dụng
+                if(focusPosition === "Widget") widgetArea.forceActiveFocus()
+                if(focusPosition === "AppMenu") applicationMenu.forceActiveFocus()
             }
         }
     }

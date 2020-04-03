@@ -46,14 +46,12 @@ MouseArea {
                 source: icon + "_n.png"
             }
         },
-        State {     // FIXME: add state
+        State {
             name: "Drag"
-//            PropertyChanges {
-//                target: idBackgroud
-//                source: icon + "_d.png"
-//            }
             PropertyChanges {
-                target: app
+//                target: app
+                target: idBackgroud
+                source: icon + "_p.png"
                 scale: 1.2
             }
         }

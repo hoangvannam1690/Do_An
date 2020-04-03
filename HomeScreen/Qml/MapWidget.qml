@@ -77,12 +77,21 @@ MouseArea {
                 target: idBackgroud
                 source: ""
             }
+        },
+        State {
+            name: "Drag"
+            PropertyChanges {
+                target: idBackgroud
+                source: "qrc:/Img/HomeScreen/bg_widget_p.png"
+                scale: 1.1
+            }
         }
     ]
     onPressed: root.state = "Pressed"
     onReleased:{
         root.focus = true
-        root.state = "Focus"
+//        root.state = "Focus"
+        root.state = "Normal"
     }
     onFocusChanged: {
         if (root.focus == true )
