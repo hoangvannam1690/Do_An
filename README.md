@@ -1,3 +1,5 @@
+Close, những cập nhật sẽ update tại repository mới
+
 # AAD305x_01
 ***
 **Chú ý: cần cài thêm các thư viện**
